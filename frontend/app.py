@@ -2,7 +2,11 @@ import streamlit as st
 import requests
 import os
 
-API_URL = os.environ.get("API_URL", "http://localhost:8000")
+API_URL = os.environ.get("API_URL")
+
+if not API_URL:
+    st.error("API_URL is not set")
+    st.stop()
 
 st.set_page_config(page_title="Task Manager", layout="centered")
 st.title("🗂 Task Manager")
