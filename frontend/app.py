@@ -19,19 +19,20 @@ priority = st.number_input("Priority", 1, 10, 1)
 due_date = st.date_input("Due Date")
 
 if st.button("Add Task"):
-    if not title.strip():
-        st.error("Title is required")
+    res = requests.post(
+        f"{API_URL}/tasks",
+        json={
+            "title": title,
+            "description": description,
+            "priority": priority,
+            "due_date": str(due_date)
+        }
+    )
+
+    if res.status_code == 200:
+        st.success(res.json().get("message", "Task added"))
     else:
-        res = requests.post(
-            f"{API_URL}/tasks",
-            json={
-                "title": title,
-                "description": description,
-                "priority": priority,
-                "due_date": str(due_date)
-            }
-        )
-        st.success(res.json().get("message", "Done"))
+        st.error(res.text)
 
 # VIEW TASKS
 st.header("📋 Tasks")
