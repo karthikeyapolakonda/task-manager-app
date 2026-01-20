@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: task-manager-backend
+    env: python
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+  - type: web
+    name: task-manager-frontend
+    env: python
+    buildCommand: pip install -r frontend/requirements.txt
+    startCommand: streamlit run frontend/app.py --server.port $PORT --server.headless true --server.runOnSave false
+    envVars:
+      - key: API_URL
+        value: https://task-manager-backend.onrender.com
