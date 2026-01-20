@@ -5,7 +5,7 @@ import os
 API_URL = os.environ.get("API_URL", "http://localhost:8000")
 
 st.set_page_config(page_title="Task Manager", layout="centered")
-st.title("🧠 Task Manager (FastAPI + Streamlit)")
+st.title("Task Manager (FastAPI + Streamlit)")
 
 # ADD TASK
 st.header("➕ Add Task")
