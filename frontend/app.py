@@ -30,10 +30,20 @@ if st.button("Add Task"):
 # VIEW TASKS
 st.header("📋 All Tasks")
 if st.button("Refresh Tasks"):
-    tasks = requests.get(f"{API_URL}/tasks").json()
-    for t in tasks:
-        st.write(f"**{t['title']}** | Priority: {t['priority']} | Status: {t['status']}")
-        st.caption(t["description"])
+    try:
+        response = requests.get(f"{API_URL}/tasks")
+        response.raise_for_status()
+        tasks = response.json()
+        if isinstance(tasks, list):
+            for t in tasks:
+                st.write(f"**{t['title']}** | Priority: {t['priority']} | Status: {t['status']}")
+                st.caption(t["description"])
+        else:
+            st.error(f"Unexpected response format: {tasks}")
+    except requests.exceptions.RequestException as e:
+        st.error(f"Failed to fetch tasks: {e}")
+    except Exception as e:
+        st.error(f"Error processing tasks: {e}")
 
 
 # UPDATE PRIORITY
